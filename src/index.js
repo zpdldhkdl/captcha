@@ -1,15 +1,9 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const svgCaptcha = require('./lib/svg-captcha');
 
 dotenv.config();
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}));
-// parse application/json
-app.use(bodyParser.json());
 
 app.get('/captcha', async (req, res) => {
     const { returnText, data } = await svgCaptcha({ sha256: true });
@@ -18,7 +12,10 @@ app.get('/captcha', async (req, res) => {
         text: returnText,
         data: data
     });
-})
+});
+
+// views set
+app.set('views', __dirname + 'views');
 
 const PORT = process.env.PORT || 3000;
 
